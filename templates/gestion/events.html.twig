@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+
+<a href="{{ path('app_gestion_events_input') }}">New event</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date start</th>
+            <th>Date end</th>
+            <th>Visibility</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+
+    <tbody>    
+        {% for event in events %}
+        <tr>
+            <td>{{ event.title }}</td>
+            <td>{{ event.description }}</td>
+            <td>{{ event.dateStart|date('Y-m-d H:i') }}</td>
+            <td>{{ event.dateEnd|date('Y-m-d H:i') }}</td>
+            <td>{{ event.isVisibility ? 'Yes' : 'No' }}</td>
+            <td><a href="{{ path('app_gestion_events_input', { 'id': event.id })}}"> Edit </a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+
+<a href="{{ path('app_admin_users_input') }}">New User</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Role</th>
+            <th>Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Active</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+
+    <tbody>    
+        {% for user in users %}
+        <tr>
+            <td>{{ user.getRoleLabel() }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+            <td><a href="{{ path('app_admin_users_input', { 'id': user.id })}}"> Edit </a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}
