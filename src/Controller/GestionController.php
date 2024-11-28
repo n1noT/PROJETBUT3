@@ -7,13 +7,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Events; 
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormError;
+
 
 
 class GestionController extends AbstractController
@@ -64,10 +67,16 @@ class GestionController extends AbstractController
         $form = $this->createFormBuilder($event)
             ->add('title', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('dateStart', DateType::class)
-            ->add('dateEnd', DateType::class)
+            ->add('dateStart', DateTimeType::class)
+            ->add('dateEnd', DateTimeType::class)
             ->add('visibility', CheckboxType::class,
             ['required' => false])
+            ->add('users', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+                'multiple' => true,
+                'expanded' => true, 
+            ])
             ->getForm();
 
         $form->handleRequest($request);
