@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormError;
+use App\Service\MailerService;
 
 
 
@@ -50,7 +51,7 @@ class GestionController extends AbstractController
     }
 
     #[Route('/gestion/events/input/{id?}', name: 'app_gestion_events_input')]
-    public function event(Request $request, EntityManagerInterface $entityManager): Response
+    public function event(Request $request, EntityManagerInterface $entityManager, MailerService $mailer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -89,6 +90,12 @@ class GestionController extends AbstractController
                 $form->get('dateEnd')->addError(new FormError('The end date cannot be earlier than the start date.'));
             }
             else{
+                if($form->get('users')->getData() != null){
+                    foreach($form->get('users')->getData() as $user){
+                        $mailer->sendEmail($user->getEmail(), $form->get('title')->getData(), $form->get('dateStart')->getData()->format('Y-m-d H:i:s'));
+                    }
+                }
+
                 $entityManager->persist($event);
                 $entityManager->flush();
 

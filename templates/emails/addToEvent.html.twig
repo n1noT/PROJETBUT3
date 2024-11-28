@@ -1,0 +1,12 @@
+{# templates/emails/signup.html.twig #}
+<h1>Welcome {{ email.toName }}!</h1>
+
+<p><code>{{ email.to[0].address }}</code></p>
+
+<p>You have been added to the event <strong>{{ event_name }}</strong>.</p>
+
+<p>Event details:</p>
+<ul>
+    <li><strong>Event Name:</strong> {{ event_name }}</li>
+    <li><strong>Event Date:</strong> {{ event_date }}</li>
+</ul>
